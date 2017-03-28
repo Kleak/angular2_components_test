@@ -11,7 +11,7 @@ class LoginComponentPO {
   @ById('login-button')
   PageLoaderElement _loginButton;
 
-  set username(String value) => _username.type(value);
-  set password(String value) => _password.type(value);
+  Future username(String value) => _username.type(value);
+  Future password(String value) => _password.type(value);
   Future click() => _loginButton.click();
 }

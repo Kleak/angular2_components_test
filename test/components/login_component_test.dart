@@ -1,5 +1,8 @@
 @Tags(const ['aot'])
 @TestOn('browser')
+
+import 'dart:async';
+
 import 'package:angular2/angular2.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:angular_test/angular_test.dart';
@@ -23,15 +26,25 @@ void main() {
       var password = "MyPassword";
 
       var loginService = new MockLoginService();
-      when(loginService.login(username, password)).thenReturn(null);
+      when(loginService.login(username, password)).thenReturn(true);
       var testBed = new NgTestBed<LoginComponent>()
           .addProviders([materialProviders, provide(LoginService, useValue: loginService)]);
       var fixture = await testBed.create();
 
       LoginComponentPO page = await fixture.resolvePageObject(LoginComponentPO);
-      page.username = username;
-      page.password = password;
-      page.click();
+
+      await page.username(username);
+      await fixture.update((LoginComponent lc) {
+        lc.username = username;
+      });
+
+      await page.password(password);
+      await fixture.update((LoginComponent lc) {
+        lc.password = password;
+      });
+      await page.click();
+
+      expect(true, await loginService.login(username, password));
     });
   });
 }

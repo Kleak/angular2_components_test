@@ -6,6 +6,7 @@ import 'package:angular2_components_test/services/login_service.dart';
   selector: 'my-login',
   templateUrl: 'login_component.html',
   directives: const [materialDirectives],
+  providers: const [LoginService],
 )
 class LoginComponent implements OnInit {
   final LoginService _loginService;
@@ -18,7 +19,6 @@ class LoginComponent implements OnInit {
   ngOnInit() {}
 
   void login() {
-    print("$username $password");
     _loginService.login(username, password);
   }
 }
